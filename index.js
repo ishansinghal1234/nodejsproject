@@ -1,36 +1,28 @@
-const http=require("http")
-const fetch=require("node-fetch")
+const http = require("http");
+const fetch = require("node-fetch");
 const jsdom = require("jsdom");
-const fs=require("fs")
+const fs = require("fs");
 const { JSDOM } = jsdom;
 global.document = new JSDOM().window.document;
-let htmlfile=fs.readFileSync("index.html","utf-8")
-const replace=(tempvalue,newvalue)=>{
-    // let temp=tempvalue.replace("{%title%}",newvalue.title)
-    // temp=temp.replace("{%desc%}",newvalue.body)
-    let temp=tempvalue.replace("{%divappend%}",`${newvalue}`)
-    return temp;
+let htmlfile = fs.readFileSync("index.html", "utf-8");
+const replace = (tempvalue, newvalue) => {
+  // let temp=tempvalue.replace("{%title%}",newvalue.title)
+  // temp=temp.replace("{%desc%}",newvalue.body)
+  let temp = tempvalue.replace("{%divappend%}", `${newvalue}`);
+  return temp;
+};
 
-
-}
-
-
-
-
-
-
-const server=http.createServer((req,res)=>{
-
-    fetch('https://jsonplaceholder.typicode.com/posts')
-.then(response => response.json())
-.then((json) =>{
-
-  let div=document.createElement("div")
-    json.forEach((element) => {
-
-if(div.innerHTML)
-{
-  div.innerHTML+=`<div class="card mid min-width" style="width: 18rem;" >
+const server = http.createServer((req, res) => {
+  fetch("https://jsonplaceholder.typicode.com/posts")
+    .then(response => response.json())
+    .then(json => {
+      let div = document.createElement("div");
+      json.forEach(element => {
+        let console = () => {
+          console.log("hello world");
+        };
+        if (div.innerHTML) {
+          div.innerHTML += `<div class="card mid min-width" style="width: 18rem;" >
   <div>
   
   
@@ -38,14 +30,13 @@ if(div.innerHTML)
   <div class="card-body">
     <h5 class="card-title">${element.title}</h5>
     <p class="card-text">${element.body}</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+    <button  class="btn btn-primary" onclick="console" >Go somewhere</button>
   </div>
   </div>
-  </div>`
-}
-else{
-// console.log(element.title)
-  div.innerHTML=`<div class="card mid min-width" style="width: 18rem;" >
+  </div>`;
+        } else {
+          // console.log(element.title)
+          div.innerHTML = `<div class="card mid min-width" style="width: 18rem;" >
   <div>
   
   
@@ -53,24 +44,18 @@ else{
   <div class="card-body">
     <h5 class="card-title">${element.title}</h5>
     <p class="card-text">${element.body}</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+    <button  class="btn btn-primary"onclick="console" >Go somewhere</button>
   </div>
   </div>
-  </div>`
-}
-
+  </div>`;
+        }
 
         // console.log(element[0])
-        
-      })
-      const newhtmlfile= replace(htmlfile,div.innerHTML)
-      
-      res.end(newhtmlfile)
-             
-    })
-    
-} )
- 
-       
-server.listen(3000,"127.0.0.1")
+      });
+      const newhtmlfile = replace(htmlfile, div.innerHTML);
 
+      res.end(newhtmlfile);
+    });
+});
+
+server.listen(3000, "127.0.0.1");
