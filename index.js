@@ -3,6 +3,7 @@ const fetch = require("node-fetch");
 const jsdom = require("jsdom");
 const fs = require("fs");
 const { JSDOM } = jsdom;
+const port = process.env.port || 8000;
 global.document = new JSDOM().window.document;
 let htmlfile = fs.readFileSync("index.html", "utf-8");
 const replace = (tempvalue, newvalue) => {
@@ -58,4 +59,4 @@ const server = http.createServer((req, res) => {
     });
 });
 
-server.listen(3000, "127.0.0.1");
+server.listen(port, "127.0.0.1");
